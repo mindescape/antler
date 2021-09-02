@@ -14,10 +14,13 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     hot: true,
+    client: {
+      logging: 'warn',
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Antler',
+      template: path.join(__dirname, 'src/index.html'),
     }),
   ],
   module: {

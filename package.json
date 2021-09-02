@@ -10,7 +10,6 @@
   "author": "mindescape",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21",
     "vue": "^2.6.14"
   },
   "devDependencies": {
