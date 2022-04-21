@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
+const colors = require('colors')
 const connectDB = require('../config/db')
 
 dotenv.config({ path: './config/config.env' })
@@ -19,10 +20,10 @@ if (ENV === 'development') {
 
 app.use('/api/v1/reviews', reviews)
 
-const server = app.listen(PORT, console.log(`Server is running in ${ENV} on ${PORT}`))
+const server = app.listen(PORT, console.log(`Server is running in ${ENV} on ${PORT}`.yellow.bold))
 
 // Handle rejections
 process.on('unhandledRejection', (err) => {
-  console.log(`Error: ${err.message}`)
+  console.log(`Error: ${err.message}`.red)
   server.close(() => process.exit(1))
 })

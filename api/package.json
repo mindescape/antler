@@ -8,6 +8,7 @@
   "author": "mindescape",
   "license": "MIT",
   "devDependencies": {
+    "colors": "^1.4.0",
     "nodemon": "^2.0.15"
   },
   "dependencies": {
