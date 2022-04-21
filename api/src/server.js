@@ -1,18 +1,28 @@
 const express = require('express')
 const dotenv = require('dotenv')
+const morgan = require('morgan')
+const connectDB = require('../config/db')
 
-// Load env
 dotenv.config({ path: './config/config.env' })
+const PORT = process.env.PORT || 4000
+const ENV = process.env.NODE_ENV
 
-// Route files
+connectDB()
+
 const reviews = require('./routes/reviews')
 
 const app = express()
 
-// Mount routers
+if (ENV === 'development') {
+  app.use(morgan('dev'))
+}
+
 app.use('/api/v1/reviews', reviews)
 
-const PORT = process.env.PORT || 4000
-const ENV = process.env.NODE_ENV
+const server = app.listen(PORT, console.log(`Server is running in ${ENV} on ${PORT}`))
 
-app.listen(PORT, console.log(`Server is running in ${ENV} on ${PORT}`))
+// Handle rejections
+process.on('unhandledRejection', (err) => {
+  console.log(`Error: ${err.message}`)
+  server.close(() => process.exit(1))
+})
