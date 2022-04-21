@@ -1,0 +1,17 @@
+{
+  "name": "antler-api",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "NODE_ENV=production nodemon src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "author": "mindescape",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  }
+}
