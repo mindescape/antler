@@ -14,6 +14,9 @@ const reviews = require('./routes/reviews')
 
 const app = express()
 
+// Body parser
+app.use(express.json())
+
 if (ENV === 'development') {
   app.use(morgan('dev'))
 }
