@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const slugify = require('slugify')
 
 const ReviewSchema = new mongoose.Schema({
   bandName: {
@@ -42,6 +43,17 @@ const ReviewSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+})
+
+// Create review slug from the name
+ReviewSchema.pre('save', function (next) {
+  console.log('Slugify ran', this)
+  const slugSource = this.bandName.concat(' ', this.albumName)
+  this.slug = slugify(slugSource, {
+    lower: true,
+    remove: /[*+~.()'"!:@]/g,
+  })
+  next()
 })
 
 module.exports = mongoose.model('Review', ReviewSchema)
