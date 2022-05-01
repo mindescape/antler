@@ -1,3 +1,4 @@
+const ErrorResponse = require('../utils/errorResponse')
 const Review = require('../models/Review')
 
 // @desc Get all reviews
@@ -13,9 +14,7 @@ exports.getReviews = async (req, res, next) => {
       count: reviews.length,
     })
   } catch (err) {
-    res.status(400).json({
-      success: false,
-    })
+    next(err)
   }
 }
 
@@ -27,9 +26,7 @@ exports.getReview = async (req, res, next) => {
     const review = await Review.findById(req.params.id)
 
     if (!review) {
-      return res.status(400).json({
-        success: false,
-      })
+      return next(new ErrorResponse(`Review with id ${req.params.id} has not been found`, 404))
     }
 
     res.status(200).json({
@@ -37,9 +34,7 @@ exports.getReview = async (req, res, next) => {
       data: review,
     })
   } catch (err) {
-    res.status(400).json({
-      success: false,
-    })
+    next(err)
   }
 }
 
@@ -55,9 +50,7 @@ exports.createReview = async (req, res, next) => {
       data: review,
     })
   } catch (err) {
-    res.status(400).json({
-      success: false,
-    })
+    next(err)
   }
 }
 
@@ -72,7 +65,7 @@ exports.updateReview = async (req, res, next) => {
     })
 
     if (!review) {
-      return res.status(400).json({ success: false })
+      return next(new ErrorResponse(`Review with id ${req.params.id} has not been found`, 404))
     }
 
     res.status(200).json({
@@ -80,9 +73,7 @@ exports.updateReview = async (req, res, next) => {
       data: review,
     })
   } catch (err) {
-    res.status(400).json({
-      success: false,
-    })
+    next(err)
   }
 }
 
@@ -94,9 +85,7 @@ exports.deleteReview = async (req, res, next) => {
     const review = await Review.findByIdAndDelete(req.params.id)
 
     if (!review) {
-      return res.status(400).json({
-        success: false,
-      })
+      return next(new ErrorResponse(`Review with id ${req.params.id} has not been found`, 404))
     }
 
     res.status(200).json({
@@ -104,8 +93,6 @@ exports.deleteReview = async (req, res, next) => {
       data: {},
     })
   } catch (err) {
-    res.status(400).json({
-      success: false,
-    })
+    next(err)
   }
 }

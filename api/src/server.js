@@ -2,6 +2,8 @@ const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
 const colors = require('colors')
+const errorHandler = require('./middleware/error')
+
 const connectDB = require('../config/db')
 
 dotenv.config({ path: './config/config.env' })
@@ -14,14 +16,11 @@ const reviews = require('./routes/reviews')
 
 const app = express()
 
-// Body parser
+// Middlewares
+if (ENV === 'development') app.use(morgan('dev'))
 app.use(express.json())
-
-if (ENV === 'development') {
-  app.use(morgan('dev'))
-}
-
 app.use('/api/v1/reviews', reviews)
+app.use(errorHandler)
 
 const server = app.listen(PORT, console.log(`Server is running in ${ENV} on ${PORT}`.yellow.bold))
 
