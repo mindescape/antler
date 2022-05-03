@@ -6,7 +6,10 @@ const Review = require('../models/Review')
 // @route GET /api/v1/reviews
 // @access Public
 exports.getReviews = asyncHandler(async (req, res, next) => {
-  const reviews = await Review.find()
+  let queryStr = JSON.stringify(req.query).replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`)
+  let query = Review.find(JSON.parse(queryStr))
+
+  const reviews = await query
 
   res.status(200).json({
     success: true,
