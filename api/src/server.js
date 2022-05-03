@@ -2,17 +2,17 @@ const express = require('express')
 const dotenv = require('dotenv')
 const morgan = require('morgan')
 const colors = require('colors')
-const errorHandler = require('./middleware/error')
 
+const errorHandler = require('./middleware/error')
 const connectDB = require('../config/db')
+const reviews = require('./routes/reviews')
 
 dotenv.config({ path: './config/config.env' })
 const PORT = process.env.PORT || 4000
 const ENV = process.env.NODE_ENV
+const MONGO_URI = process.env.MONGO_URI || null
 
-connectDB()
-
-const reviews = require('./routes/reviews')
+if (MONGO_URI) connectDB(MONGO_URI)
 
 const app = express()
 
