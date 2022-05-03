@@ -6,8 +6,27 @@ const Review = require('../models/Review')
 // @route GET /api/v1/reviews
 // @access Public
 exports.getReviews = asyncHandler(async (req, res, next) => {
-  let queryStr = JSON.stringify(req.query).replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`)
+  const reqQuery = { ...req.query }
+
+  const fieldsToRemove = ['select', 'sort']
+  fieldsToRemove.forEach((param) => {
+    delete reqQuery[param]
+  })
+
+  let queryStr = JSON.stringify(reqQuery).replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`)
   let query = Review.find(JSON.parse(queryStr))
+
+  if (req.query.select) {
+    const fields = req.query.select.replace(/\,/, ' ')
+    query = query.select(fields)
+  }
+
+  if (req.query.sort) {
+    const sortBy = req.query.sort.replace(/\,/, ' ')
+    query = query.sort(sortBy)
+  } else {
+    query = query.sort('-createdAt')
+  }
 
   const reviews = await query
 
