@@ -9,6 +9,7 @@ const URI = process.env.MONGO_URI || null
 
 // Load models
 const Review = require('./src/models/Review')
+const Course = require('./src/models/Course')
 
 // Connect to DB
 mongoose.connect(URI, {
@@ -18,11 +19,13 @@ mongoose.connect(URI, {
 
 // Read JSON files
 const reviews = JSON.parse(fs.readFileSync(`${__dirname}/_data/reviews.json`, 'utf-8'))
+const courses = JSON.parse(fs.readFileSync(`${__dirname}/_data/courses.json`, 'utf-8'))
 
 // Import into DB
 const importData = async () => {
   try {
     await Review.create(reviews)
+    await Course.create(courses)
 
     console.log('Data imported'.green.inverse)
     process.exit()
@@ -35,6 +38,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Review.deleteMany()
+    await Course.deleteMany()
 
     console.log('Data destroyed'.red.inverse)
     process.exit()
