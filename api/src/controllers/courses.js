@@ -12,7 +12,10 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
   if (req.params.reviewId) {
     query = Course.find({ review: req.params.reviewId })
   } else {
-    query = Course.find().populate('review')
+    query = Course.find().populate({
+      path: 'review',
+      select: 'bandName albumName',
+    })
   }
 
   const courses = await query

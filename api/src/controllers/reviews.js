@@ -14,7 +14,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
   })
 
   let queryStr = JSON.stringify(reqQuery).replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`)
-  let query = Review.find(JSON.parse(queryStr))
+  let query = Review.find(JSON.parse(queryStr)).populate('courses')
 
   if (req.query.select) {
     const fields = req.query.select.replace(/\,/, ' ')
@@ -95,11 +95,13 @@ exports.updateReview = asyncHandler(async (req, res, next) => {
 // @route DELETE /api/v1/reviews/:id
 // @access Private
 exports.deleteReview = asyncHandler(async (req, res, next) => {
-  const review = await Review.findByIdAndDelete(req.params.id)
+  const review = await Review.findById(req.params.id)
 
   if (!review) {
     return next(new ErrorResponse(`Review with id ${req.params.id} has not been found`, 404))
   }
+
+  review.remove()
 
   res.status(200).json({
     success: true,
