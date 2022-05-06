@@ -6,6 +6,7 @@ const colors = require('colors')
 const errorHandler = require('./middleware/error')
 const connectDB = require('../config/db')
 const reviews = require('./routes/reviews')
+const courses = require('./routes/courses')
 
 dotenv.config({ path: './config/config.env' })
 const PORT = process.env.PORT || 4000
@@ -20,6 +21,7 @@ const app = express()
 if (ENV === 'development') app.use(morgan('dev'))
 app.use(express.json())
 app.use('/api/v1/reviews', reviews)
+app.use('/api/v1/courses', courses)
 app.use(errorHandler)
 
 const server = app.listen(PORT, console.log(`Server is running in ${ENV} on ${PORT}`.yellow.bold))
