@@ -9,6 +9,7 @@ const errorHandler = require('./middleware/error')
 const connectDB = require('../config/db')
 const reviews = require('./routes/reviews')
 const courses = require('./routes/courses')
+const auth = require('./routes/auth')
 
 dotenv.config({ path: './config/config.env' })
 const PORT = process.env.PORT || 4000
@@ -25,6 +26,7 @@ app.use(express.json())
 app.use(fileupload())
 app.use('/api/v1/reviews', reviews)
 app.use('/api/v1/courses', courses)
+app.use('/api/v1/auth', auth)
 app.use(errorHandler)
 
 app.use(express.static(path.join(__dirname, '../public')))
